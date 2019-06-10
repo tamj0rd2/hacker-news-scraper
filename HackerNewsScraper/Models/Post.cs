@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace HackerNewsScraper.Schema
+namespace HackerNewsScraper.Models
 {
     [Serializable]
     public class Post
