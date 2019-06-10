@@ -27,16 +27,14 @@ namespace HackerNewsScraper.Wrappers
             return this.node.SelectNodes(xpath).Select(node => new HtmlNodeWrapper(node));
         }
 
-        public virtual string GetInnerHtml(string xpath = null)
+        public virtual string GetInnerHtml(string xpath)
         {
-            var node = xpath == null ? this.node : this.node.SelectSingleNode(xpath);
             return this.node.SelectSingleNode(xpath).InnerHtml;
         }
 
-        public virtual string GetAttributeValue(string name, string xpath = null, string defaultValue = null)
+        public virtual string GetAttributeValue(string name, string xpath, string defaultValue = null)
         {
-            var node = xpath == null ? this.node : this.node.SelectSingleNode(xpath);
-            return node.GetAttributeValue(name, defaultValue);
+            return this.node.SelectSingleNode(xpath).GetAttributeValue(name, defaultValue);
         }
     }
 }

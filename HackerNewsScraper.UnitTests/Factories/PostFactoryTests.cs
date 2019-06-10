@@ -182,6 +182,7 @@ namespace HackerNewsScraper.UnitTests.Factories
             createPost.Should().ThrowExactly<ValidationException>().WithMessage(PostFactory.PointsLessThanZero);
         }
 
+        [TestCase("discuss", 0)]
         [TestCase("0 comments", 0)]
         [TestCase("1 comment", 1)]
         [TestCase("123 comments", 123)]
@@ -247,9 +248,9 @@ namespace HackerNewsScraper.UnitTests.Factories
             string rank = "1.", string title = "First post", string uri = "http://some-url.com")
         {
             var primaryNode = new Mock<HtmlNodeWrapper>(MockBehavior.Strict, null);
-            primaryNode.Setup(x => x.GetInnerHtml(@"//span[@class='rank']")).Returns(rank);
-            primaryNode.Setup(x => x.GetInnerHtml(@"//a[@class='storylink']")).Returns(title);
-            primaryNode.Setup(x => x.GetAttributeValue("href", @"//a[@class='storylink']", null)).Returns(uri);
+            primaryNode.Setup(x => x.GetInnerHtml(@".//span[@class='rank']")).Returns(rank);
+            primaryNode.Setup(x => x.GetInnerHtml(@".//a[@class='storylink']")).Returns(title);
+            primaryNode.Setup(x => x.GetAttributeValue("href", @".//a[@class='storylink']", null)).Returns(uri);
             return primaryNode;
         }
 
@@ -257,9 +258,9 @@ namespace HackerNewsScraper.UnitTests.Factories
             string points = "123 points", string author = "tamara", string comments = "15 comments")
         {
             var secondaryNode = new Mock<HtmlNodeWrapper>(MockBehavior.Strict, null);
-            secondaryNode.Setup(x => x.GetInnerHtml(@"//span[@class='score']")).Returns(points);
-            secondaryNode.Setup(x => x.GetInnerHtml(@"//a[@class='hnuser']")).Returns(author);
-            secondaryNode.Setup(x => x.GetInnerHtml(@"//td[@class='subtext']/a[last()]")).Returns(comments);
+            secondaryNode.Setup(x => x.GetInnerHtml(@".//span[@class='score']")).Returns(points);
+            secondaryNode.Setup(x => x.GetInnerHtml(@".//a[@class='hnuser']")).Returns(author);
+            secondaryNode.Setup(x => x.GetInnerHtml(@".//td[@class='subtext']/a[last()]")).Returns(comments);
             return secondaryNode;
         }
     }
