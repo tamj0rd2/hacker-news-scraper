@@ -19,7 +19,7 @@ namespace HackerNewsScraper.Models
         public int Points { get; set; }
 
         [JsonProperty("comments")]
-        public int Comments { get; set; }
+        public int CommentsCount { get; set; }
 
         [JsonProperty("rank")]
         public int Rank { get; set; }
