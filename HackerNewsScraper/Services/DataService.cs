@@ -26,6 +26,7 @@ namespace HackerNewsScraper
             while (validPosts.Count < numOfPostsToGet)
             {
                 var documentNode = this.htmlWebWrapper.Load($"https://news.ycombinator.com/news?p={pageNumber}");
+                pageNumber += 1;
                 var nodes = documentNode.SelectNodes(@"//table[@class='itemlist']//tr").ToList();
 
                 if (nodes.Count == 0)

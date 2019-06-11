@@ -121,6 +121,10 @@ namespace HackerNewsScraper.UnitTests.Services
 
             // Assert
             result.Count.Should().Be(numOfPosts);
+            this.mockHtmlWebWrapper.Verify(x => x.Load("https://news.ycombinator.com/news?p=1"), Times.Once);
+            this.mockHtmlWebWrapper.Verify(x => x.Load("https://news.ycombinator.com/news?p=2"), Times.Once);
+            this.mockHtmlWebWrapper.Verify(x => x.Load("https://news.ycombinator.com/news?p=3"), Times.Never);
+
         }
 
         private List<HtmlNodeWrapper> CreateNodesForSinglePost()
