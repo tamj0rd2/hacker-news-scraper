@@ -8,11 +8,10 @@ namespace HackerNewsScraper
     {
         public static void Main(string[] args)
         {
-            var htmlWebWrapper = new HtmlWebWrapper();
-            var postFactory = new PostFactory();
-            var dataService = new DataService(htmlWebWrapper, postFactory);
-            var posts = dataService.GetTopPosts();
-            Console.WriteLine(posts);
+            var systemWrapper = new SystemWrapper();
+            var dataService = new DataService(new HtmlWebWrapper(), new PostFactory());
+            var jsonWrapper = new JsonWrapper();
+            new HackerNewsScraper(systemWrapper, dataService, jsonWrapper).Run(args);
 
 #if DEBUG
             Console.ReadLine();

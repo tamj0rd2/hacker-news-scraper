@@ -42,7 +42,7 @@ namespace HackerNewsScraper.UnitTests.Services
             this.mockDocumentNode.Setup(x => x.SelectNodes(It.IsNotNull<string>())).Returns(nodes);
 
             // Act
-            var result = this.dataService.GetTopPosts();
+            var result = this.dataService.GetTopPosts(1);
 
             // Assert
             this.mockPostFactory.Verify(x => x.CreatePost(primaryNode, secondaryNode), Times.Once);
@@ -59,7 +59,7 @@ namespace HackerNewsScraper.UnitTests.Services
             this.mockDocumentNode.Setup(x => x.SelectNodes(It.IsNotNull<string>())).Returns(nodes);
 
             // Act
-            var result = this.dataService.GetTopPosts();
+            var result = this.dataService.GetTopPosts(4);
 
             // Assert
             this.mockPostFactory.Verify(
@@ -75,7 +75,10 @@ namespace HackerNewsScraper.UnitTests.Services
             nodes.AddRange(this.CreateNodesForSinglePost());
             nodes.AddRange(this.CreateNodesForSinglePost());
             nodes.AddRange(this.CreateNodesForSinglePost());
-            this.mockDocumentNode.Setup(x => x.SelectNodes(It.IsNotNull<string>())).Returns(nodes);
+
+            this.mockDocumentNode.SetupSequence(x => x.SelectNodes(It.IsNotNull<string>()))
+                .Returns(nodes)
+                .Returns(new List<HtmlNodeWrapper>());
 
             this.mockPostFactory
                 .SetupSequence(x => x.CreatePost(It.IsNotNull<HtmlNodeWrapper>(), It.IsNotNull<HtmlNodeWrapper>()))
@@ -85,12 +88,39 @@ namespace HackerNewsScraper.UnitTests.Services
                 .Returns(new Post { Title = "Post4" });
 
             // Act
-            var result = this.dataService.GetTopPosts().ToList();
+            var result = this.dataService.GetTopPosts(4).ToList();
 
             // Assert
             result.Count.Should().Be(2);
             result[0].Title.Should().Be("Post1");
             result[1].Title.Should().Be("Post4");
+        }
+
+        [TestCase(30)]
+        [TestCase(50)]
+        public void GetTopPosts_ReturnsTheNumberOfPostsSpecified(int numOfPosts)
+        {
+            // Arrange
+            var nodes = new List<HtmlNodeWrapper>();
+            for (var i = 0; i < numOfPosts; i++)
+            {
+                nodes.AddRange(this.CreateNodesForSinglePost());
+            }
+            this.mockDocumentNode.Setup(x => x.SelectNodes(It.IsNotNull<string>())).Returns(nodes);
+
+            this.mockPostFactory
+                .SetupSequence(x => x.CreatePost(It.IsNotNull<HtmlNodeWrapper>(), It.IsNotNull<HtmlNodeWrapper>()))
+                .Throws<ValidationException>()
+                .Throws<ValidationException>()
+                .Throws<ValidationException>()
+                .Throws<ValidationException>()
+                .Throws<ValidationException>();
+
+            // Act
+            var result = this.dataService.GetTopPosts(numOfPosts).ToList();
+
+            // Assert
+            result.Count.Should().Be(numOfPosts);
         }
 
         private List<HtmlNodeWrapper> CreateNodesForSinglePost()

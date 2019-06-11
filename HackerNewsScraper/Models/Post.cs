@@ -6,22 +6,22 @@ namespace HackerNewsScraper.Models
     [Serializable]
     public class Post
     {
-        [JsonProperty("title")]
+        [JsonProperty("title", Order = 1)]
         public string Title { get; set; }
 
-        [JsonProperty("uri")]
+        [JsonProperty("uri", Order = 2)]
         public string Uri { get; set; }
 
-        [JsonProperty("author")]
+        [JsonProperty("author", Order = 3)]
         public string Author { get; set; }
 
-        [JsonProperty("points")]
+        [JsonProperty("points", Order = 4)]
         public int Points { get; set; }
 
-        [JsonProperty("comments")]
+        [JsonProperty("comments", Order = 5)]
         public int CommentsCount { get; set; }
 
-        [JsonProperty("rank")]
+        [JsonProperty("rank", Order = 6)]
         public int Rank { get; set; }
     }
 }
